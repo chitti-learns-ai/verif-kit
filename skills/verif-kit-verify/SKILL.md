@@ -46,7 +46,22 @@ Before starting fresh, check for an in-progress run:
 State is on disk in the checklists; the model carries no cross-invocation memory.
 
 ## Phase 0 — Preconditions
-Run `commands.verifyFast`; the module must be coherent before verification. Identify the governing spec docs. Create/seed `verificationTasks` from `templates/verification-tasks-template.md` and tick VT001–VT002.
+Run `commands.verifyFast`; the module must be coherent before verification.
+
+**Locate the spec — announce it, or ask. NEVER silently assume.** Find the
+governing spec doc(s) for this module, then do exactly one of:
+- **Found it →** print a clear, explicit message to the user naming what you will
+  verify against, e.g.:
+  `📄 Spec I'm verifying against: specs/checkout/spec.md (§3 Pricing). Verifying module: card-payment. Say so if that's wrong.`
+  List every doc you'll use. State this BEFORE doing any verification work so the
+  user can correct you.
+- **Did NOT find it (or you're not confident) →** STOP and ASK the user: "I
+  couldn't find a spec for `<module>` — point me to the file/folder, or tell me
+  there's no written spec and I'll co-write a short contract of intended behavior
+  with you first." Do not guess a spec, do not infer one silently, do not proceed
+  on an assumed spec. No spec located = ask, every time.
+
+Create/seed `verificationTasks` from `templates/verification-tasks-template.md` and tick VT001–VT002.
 
 ## Phase 1 — Handoff (contract)
 Wearing the Designer hat, write an implementation-free contract from
