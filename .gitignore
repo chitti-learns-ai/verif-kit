@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Test / coverage output
+coverage/
+.nyc_output/
+*.lcov
+
+# Build / temp
+dist/
+build/
+.tmp/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Mutation-testing sandboxes
+.stryker-tmp/

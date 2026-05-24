@@ -1,0 +1,9 @@
+{
+  "id": "02-roman-numeral",
+  "domain": "converter",
+  "bugClass": "missing-cases (incomplete subtractive table for units 4 and 9)",
+  "oneLineBug": "TABLE omits [9,'IX'] and [4,'IV'], so units 4 and 9 render additively (4->IIII, 9->VIIII, 1994->MCMXCIIII); tens/hundreds/thousands subtractive forms are correct",
+  "groundTruthProbe": "toRoman(4) must be 'IV' (buggy 'IIII'); toRoman(1994) must be 'MCMXCIV' (buggy 'MCMXCIIII'); round-trip parser oracle would also catch it",
+  "expectDetection": true,
+  "notesForScoringOnly": "Do NOT show to VE. Correct detection = suite fails on buggy SUT for a 4/9-units case or a round-trip/canonical-form check."
+}

@@ -1,0 +1,56 @@
+{
+  "name": "verif-kit",
+  "version": "0.1.0",
+  "description": "Independent, coverage-driven AI verification for any project — spec-kit, but for verification. A blind, fresh-context agent verifies your code from the spec alone.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "verif-kit": "install.mjs"
+  },
+  "files": [
+    "agents",
+    "skills",
+    "templates",
+    "framework",
+    "scripts",
+    "docs",
+    "validation",
+    "evidence",
+    "install.mjs",
+    "install.md",
+    "verif-kit.config.example.json",
+    "verif-kit.json",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "STATUS.md",
+    "RELEASE-GATE.md"
+  ],
+  "scripts": {
+    "install-into-repo": "node install.mjs",
+    "study": "node validation/score.mjs",
+    "study:real-world": "node validation/real-world/score.mjs"
+  },
+  "devDependencies": {
+    "fast-check": "^4.8.0",
+    "vitest": "^2.1.0"
+  },
+  "keywords": [
+    "verification",
+    "independent-verification",
+    "ivv",
+    "testing",
+    "ai-agent",
+    "spec-driven",
+    "coverage-driven-verification",
+    "mutation-testing",
+    "property-based-testing",
+    "metamorphic-testing",
+    "claude",
+    "claude-code"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

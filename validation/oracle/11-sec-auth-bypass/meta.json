@@ -1,0 +1,9 @@
+{
+  "id": "11-sec-auth-bypass",
+  "domain": "security / authentication",
+  "bugClass": "authentication bypass — expired/replayed session accepted (missing expiry check)",
+  "oneLineBug": "verifySession checks token + signature but never checks now < expiresAt, so an expired (replayed) session still authenticates",
+  "groundTruthProbe": "sign a session expiring at T, then verifySession(session, T+1, secret) MUST throw 'expired' — the buggy impl returns userId",
+  "expectDetection": true,
+  "notesForScoringOnly": "SECURITY lens (authentication). A happy-path test (a fresh, validly-signed session authenticates) PASSES on the buggy impl; only a test that constructs a validly-signed but EXPIRED session catches it. signSession is identical and correct in both impls; only verifySession differs."
+}

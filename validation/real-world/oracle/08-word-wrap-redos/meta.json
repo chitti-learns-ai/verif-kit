@@ -1,0 +1,12 @@
+{
+  "domain": "string/text",
+  "bugClass": "performance (ReDoS / catastrophic backtracking); secondary spec-ambiguous per-line trim behavior change",
+  "expectDetection": false,
+  "realBug": true,
+  "repo": "jonschlinkert/word-wrap",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/jonschlinkert/word-wrap/commit/9f626935f3fac6ec0f3c4b26baea4eb9740d9645",
+  "issueUrl": "https://github.com/advisories/GHSA-j8xg-fqg3-53r7",
+  "bugSummary": "CVE-2023-26115: with options.trim the code ran result.replace(/\\s+$/g, ''), whose /\\s+$/ on a long whitespace run triggers catastrophic backtracking (ReDoS); the fix replaces it with a manual per-line trimTabAndSpaces. The replacement ALSO changes output value on multi-line text (per-line vs end-of-string trim), which is mildly spec-ambiguous against the README wording.",
+  "triggerInput": "PERF: wordwrap(' \\t'.repeat(50000)+'!', {trim:true, width:150000}) takes ~30s in the buggy version vs ~4ms in the correct one (ReDoS). VALUE: wordwrap('a \\n\\nb \\n \\nc\\t', {trim:true}) -> buggy 'a \\n\\nb \\n \\nc' vs correct 'a\\n\\nb\\n\\nc'. Marked expectDetection:false: catching it requires a timing/timeout oracle, and the value difference depends on a debatable reading of 'trim trailing whitespace from the returned string'."
+}

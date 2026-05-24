@@ -1,0 +1,12 @@
+{
+  "domain": "parsing/string",
+  "bugClass": "off-by-one / incomplete escape-run counting (only 1-2 backslashes handled, not parity of the full run)",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "sindresorhus/strip-json-comments",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/sindresorhus/strip-json-comments/commit/23acbfec0e758d7aa21ca203d176f820ae9d73be",
+  "issueUrl": "https://github.com/sindresorhus/strip-json-comments/pull/41",
+  "bugSummary": "Whether a quote was escaped was decided by jsonString[i-1]==='\\\\' && jsonString[i-2]!=='\\\\', which only handles runs of one or two backslashes; for a run of three or more it misjudges parity, so a string whose closing-context quote is escaped is treated as terminated and any // or /* inside it is wrongly stripped as a comment.",
+  "triggerInput": "stripJsonComments(String.raw`{\"x\":\"a\\\\\\\"//y\"}`) (three backslashes before the quote, so it is escaped and the string continues): buggy strips the in-string `//y\"}` as a comment; correct returns the input unchanged. Inputs with 0/1/2 backslashes agree."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "08-access-control",
+  "domain": "security / multi-user service",
+  "bugClass": "broken access control — IDOR / horizontal privilege escalation (OWASP A01)",
+  "oneLineBug": "getNote returns the note text by id without verifying requesterId owns it; any user who knows an id reads another user's private note",
+  "groundTruthProbe": "alice creates note a with 'alice-secret'; getNote('bob', a.id) MUST throw — the buggy impl returns 'alice-secret' to bob",
+  "expectDetection": true,
+  "notesForScoringOnly": "Tests the SECURITY lens. Catching it requires modeling the access-control policy and attacking with TWO principals (A owns, B requests) — a functional happy-path test (owner reads own note) PASSES on the buggy impl, so a naive verifier that doesn't think adversarially about authorization will MISS it. listNoteIds is correct in both impls (only getNote is broken), so the verifier must specifically probe cross-user getNote."
+}

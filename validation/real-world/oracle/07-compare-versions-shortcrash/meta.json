@@ -1,0 +1,12 @@
+{
+  "domain": "parsing/semver/comparison",
+  "bugClass": "missing case / unguarded undefined -> crash (NaN coercion) on short versions",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "omichelsen/compare-versions",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/omichelsen/compare-versions/commit/0919141b865e41c3b4a5fe911921ac7b87ab3253",
+  "issueUrl": null,
+  "bugSummary": "For one- or two-segment versions the patch segment s[2] is undefined; the pre-release check did `(s1[2] + s2[2]).indexOf('-')`, but undefined+undefined is NaN (a number), so calling .indexOf on it throws a TypeError. The fix coerces the missing patch segment to ''.",
+  "triggerInput": "compareVersions('10','10') must return 0; the buggy version throws TypeError \"(s1[2] + s2[2]).indexOf is not a function\". Also compareVersions('1','1'), compareVersions('1-alpha','1'). Three-segment comparisons work in both."
+}

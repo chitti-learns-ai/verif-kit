@@ -1,0 +1,9 @@
+{
+  "id": "12-sec-priv-escalation",
+  "domain": "security / authorization",
+  "bugClass": "vertical privilege escalation — fail-open default (unrecognized role granted all actions)",
+  "oneLineBug": "authorize returns true for any role not in the permission table, so an actor with an unknown role can perform admin-only actions",
+  "groundTruthProbe": "authorize({id:'x', role:'guest'}, 'delete-user') MUST be false — the buggy impl returns true",
+  "expectDetection": true,
+  "notesForScoringOnly": "SECURITY lens (authorization). Every test using a KNOWN role (viewer/editor/admin) passes on both impls — the only divergence is an UNKNOWN/unprivileged role attempting a privileged action. A verifier that only tests the documented roles misses it; it must probe the default branch (the spec states unknown role -> deny)."
+}

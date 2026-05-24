@@ -1,0 +1,9 @@
+{
+  "id": "13-sec-injection",
+  "domain": "security / data access",
+  "bugClass": "SQL injection — untrusted value interpolated into query text instead of parameter-bound",
+  "oneLineBug": "buildUserLookup concatenates the username into the SQL string; a value like x' OR '1'='1 alters the query structure",
+  "groundTruthProbe": "buildUserLookup(\"x' OR '1'='1\").sql differs from buildUserLookup('alice').sql (structure changes with input) and params is empty — the correct impl keeps sql constant and puts the value in params",
+  "expectDetection": true,
+  "notesForScoringOnly": "SECURITY lens (injection). A happy-path test with a benign username (alice) cannot distinguish the impls if it only checks 'a query is returned'. The catch is the structural contract: the value must be parameter-bound, so sql is INVARIANT across usernames and params carries the value. The buggy impl's sql varies with the (adversarial) input."
+}

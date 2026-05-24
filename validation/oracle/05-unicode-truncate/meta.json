@@ -1,0 +1,9 @@
+{
+  "id": "05-unicode-truncate",
+  "domain": "text/encoding",
+  "bugClass": "encoding — UTF-16 slice splits astral code points (surrogate pair)",
+  "oneLineBug": "uses s.slice(0,maxCodePoints) which counts UTF-16 units, so it miscounts emoji/astral chars AND can split a surrogate pair, emitting a lone surrogate",
+  "groundTruthProbe": "truncate('😀😀😀',2) must be '😀😀' (buggy returns '😀\\uD83D' — one emoji plus a lone high surrogate, an invalid string)",
+  "expectDetection": true,
+  "notesForScoringOnly": "SHARED-BLIND-SPOT TRAP: a reference model that also uses .slice/.length shares the bug, so a scoreboard alone would pass. The metamorphic VALIDITY oracle (output is well-formed UTF-16 / code-point prefix / count<=n) is what catches it. Tests the Knight & Leveson mitigation directly."
+}

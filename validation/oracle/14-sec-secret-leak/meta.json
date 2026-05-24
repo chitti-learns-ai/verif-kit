@@ -1,0 +1,9 @@
+{
+  "id": "14-sec-secret-leak",
+  "domain": "security / data exposure",
+  "bugClass": "sensitive data exposure — denylist serializer leaks secret fields (should be allowlist)",
+  "oneLineBug": "toPublicProfile strips only passwordHash and spreads the rest, leaking apiToken, mfaSecret and role into the public response",
+  "groundTruthProbe": "toPublicProfile(user-with-apiToken).apiToken is present (and mfaSecret, role) — the correct impl returns only {id, name, email}",
+  "expectDetection": true,
+  "notesForScoringOnly": "SECURITY lens (data exposure). The leaked object still CONTAINS id/name/email, so a test that only asserts the public fields are PRESENT passes on the buggy impl. The catch is the allowlist invariant: the result must contain NOTHING beyond {id,name,email}. The verifier must assert the absence of secret keys, not just the presence of public ones."
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "parsing/date-time",
+  "bugClass": "incorrect regex (single-digit quantifier where multi-digit was needed)",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "vercel/ms",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/vercel/ms/commit/2669f23e99be0bb6b65d365151884de52434301c",
+  "issueUrl": "https://github.com/vercel/ms/pull/111",
+  "bugSummary": "The parse regex allowed only a single integer digit after a leading minus sign ('\\\\-?\\\\d?'), so negative decimals with two or more integer digits (e.g. '-10.5h') failed to match and returned undefined instead of the correct millisecond value.",
+  "triggerInput": "ms('-10.5h') must be -37800000 (buggy returns undefined); ms('-100.5s') -> -100500; ms('-10.5m') -> -630000. Positive decimals (e.g. '10.5h') and single-digit negatives ('-1.5h') work in both."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "04-lru-cache",
+  "domain": "data-structure (stateful)",
+  "bugClass": "stateful recency — get() does not refresh LRU order",
+  "oneLineBug": "get() returns map.get(key) without moving the key to most-recently-used, so a recently-READ key is wrongly evicted; only put() refreshes recency",
+  "groundTruthProbe": "after the spec's worked sequence on capacity 2, get('a') must be 1 and get('b') must be undefined; the buggy impl reverses this (get('a')=undefined, get('b')=2)",
+  "expectDetection": true,
+  "notesForScoringOnly": "Do NOT show to VE. Best caught by a stateful/model-based test (fc.commands) or the spec's directed sequence. Tests whether the VE exercises READ-then-evict ordering, not just put-based eviction."
+}

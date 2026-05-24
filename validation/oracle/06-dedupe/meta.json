@@ -1,0 +1,9 @@
+{
+  "id": "06-dedupe",
+  "domain": "data-structure / algorithm",
+  "bugClass": "performance / complexity regression (O(n^2) vs O(n)) — functionally correct",
+  "oneLineBug": "uses out.includes(x) (linear rescan) inside the loop → O(n^2); every OUTPUT value is identical to the O(n) version",
+  "groundTruthProbe": "no functional probe exists — buggy and correct produce byte-identical outputs for all inputs; the defect is only observable as wall-clock time / complexity",
+  "expectDetection": false,
+  "notesForScoringOnly": "GUARANTEED HONEST MISS. A spec with no complexity bound makes this invisible to functional/oracle verification: the reference model and the SUT agree on every input. This case exists to PROVE the harness reports negatives (i.e. the study is not rigged to only-catchable bugs). If the VE flags it, that's a SURPRISE (it must have added an unprompted complexity/timing assertion) — logged, not penalized."
+}

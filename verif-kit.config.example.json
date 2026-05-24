@@ -1,0 +1,59 @@
+{
+  "$comment": "Verif-Kit per-project config. Copy to repo root as verif-kit.config.json and edit. This is the ONE place project specifics live, so the agent/skill prompts stay generic and portable (mirrors spec-kit's init-options.json). All paths are repo-root-relative.",
+
+  "language": "typescript",
+  "framework": {
+    "lib": "vitest",
+    "propertyLib": "fast-check",
+    "frameworkDir": "node_modules-or-vendored path to verif-kit framework (scoreboard, coverage-model)",
+    "verif-kitFrameworkDir": ".verif-kit/framework/typescript"
+  },
+
+  "paths": {
+    "verificationDir": "specs/{feature}/verification",
+    "contract": "specs/{feature}/verification/{module}.contract.md",
+    "vplan": "specs/{feature}/verification/{module}.vplan.md",
+    "verificationTasks": "specs/{feature}/verification/{module}.verification-tasks.md",
+    "quarantineDir": "tests/ivv",
+    "independentTestsDir": "tests/unit/independent",
+    "corpusDir": "tests/ivv/corpus",
+    "reportsDir": "reports/ivv"
+  },
+
+  "commands": {
+    "$comment": "How to run things in THIS repo. The agent/skill call these instead of hard-coding. On Windows where the toolchain is not on the non-interactive PATH, prefix accordingly.",
+    "verifyFast": "pnpm check && pnpm test",
+    "runQuarantine": "pnpm exec vitest run {testFile} --config vitest.ivv.config.ts",
+    "fullVerify": "pnpm verify",
+    "mutation": "pnpm exec stryker run",
+    "e2e": "pnpm exec playwright test {spec}",
+    "pathPrefix": ""
+  },
+
+  "riskTiers": {
+    "$comment": "Per-tier gates the EXECUTE/sign-off pass enforces.",
+    "P0": { "label": "correctness-critical (money/safety)", "coverageLine": 95, "coverageBranch": 90, "mutationFloor": 80, "requireConservationInvariant": true, "separateSession": true },
+    "P1": { "label": "core logic / ingestion / parsers", "coverageLine": 80, "coverageBranch": 70, "mutationFloor": 70, "requireFuzz": true, "separateSession": false },
+    "P2": { "label": "app/UX logic", "coverageBranch": 60, "mutationFloor": 0, "requireE2E": true, "separateSession": false },
+    "P3": { "label": "chrome/trivial", "skip": true }
+  },
+
+  "security": {
+    "$comment": "Enable the cyber-engineer lens for modules touching auth, multi-user data, or untrusted input.",
+    "enabled": true,
+    "checks": ["authorization-idor", "authentication-bypass", "privilege-escalation", "injection", "secret-leakage"],
+    "multiUser": true
+  },
+
+  "onlineResearch": {
+    "$comment": "Allow the verifier to research DOMAIN corner cases online. It must NEVER search for or read the implementation under test.",
+    "enabled": true,
+    "scope": "domain edge cases, standards, known-tricky inputs — never the implementation"
+  },
+
+  "independence": {
+    "$comment": "b = in-session fresh subagent (default); c = separate cloud session (strongest, reserve for P0/evidence).",
+    "mode": "in-session-subagent",
+    "escalateToSeparateSessionForTiers": ["P0"]
+  }
+}

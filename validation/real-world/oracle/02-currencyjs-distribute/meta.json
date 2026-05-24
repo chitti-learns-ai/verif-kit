@@ -1,0 +1,12 @@
+{
+  "domain": "money/decimal",
+  "bugClass": "comparison on wrong variable (sign decided from per-item value instead of total) -> conservation/sign violation",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "scurker/currency.js",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/scurker/currency.js/commit/2e907c2f5af53d661f3770728b4d99ece6458030",
+  "issueUrl": "https://github.com/scurker/currency.js/pull/99",
+  "bugSummary": "distribute() decided the direction of the leftover-penny adjustment from the per-item value (which is 0 for the leftover parts) instead of the sign of the total intValue, so distributing a small negative amount produced positive parts (wrong sign, sum != amount).",
+  "triggerInput": "currency(-0.01).distribute(5) must be [-0.01,0,0,0,0] (sum -0.01); buggy returns [0.01,0,0,0,0] (sum +0.01). Also currency(-0.03).distribute(4): correct sum -0.03, buggy sum +0.03."
+}

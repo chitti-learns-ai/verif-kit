@@ -1,0 +1,12 @@
+{
+  "domain": "date/time/numeric",
+  "bugClass": "overflow to Infinity -> NaN (missing finite guard on a multiplication)",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "sindresorhus/parse-ms",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/sindresorhus/parse-ms/commit/b2221004589ecbb6297014d4138c9d56f58ac7df",
+  "issueUrl": "https://github.com/sindresorhus/parse-ms/pull/20",
+  "bugSummary": "For very large inputs, milliseconds * 1e6 (and * 1000) overflows to Infinity, and Math.trunc(Infinity % 1000) is NaN, so the microseconds and nanoseconds fields come back as NaN instead of finite values; the fix coerces a non-finite intermediate to 0.",
+  "triggerInput": "parseMilliseconds(Number.MAX_VALUE) returns microseconds:NaN, nanoseconds:NaN in the buggy version; correct returns 0 for both. (Requires a near-MAX_VALUE input; ~1e300 does not yet trigger it.)"
+}

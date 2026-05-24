@@ -1,0 +1,9 @@
+{
+  "id": "01-calc-evaluator",
+  "domain": "calculator",
+  "bugClass": "operator-precedence (semantic)",
+  "oneLineBug": "evaluate folds strictly left-to-right, ignoring that * and / bind tighter than + and -",
+  "groundTruthProbe": "evaluate('2+3*4') must be 14 (buggy gives 20); evaluate('1+2*3-4*5') must be -13 (buggy gives 25)",
+  "expectDetection": true,
+  "notesForScoringOnly": "Do NOT show this file to the VE. A correct detection = the VE's suite fails on the buggy SUT specifically due to a precedence/mixed-operator case."
+}

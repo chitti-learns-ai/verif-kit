@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-05-24T19:04:46.414Z",
+  "results": [
+    {
+      "id": "01-calc-evaluator",
+      "domain": "calculator",
+      "bugClass": "operator-precedence (semantic)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "02-roman-numeral",
+      "domain": "converter",
+      "bugClass": "missing-cases (incomplete subtractive table for units 4 and 9)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "03-cart-pricing",
+      "domain": "e-commerce",
+      "bugClass": "money rounding / conservation (per-unit vs per-line discount rounding)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "04-lru-cache",
+      "domain": "data-structure (stateful)",
+      "bugClass": "stateful recency — get() does not refresh LRU order",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "05-unicode-truncate",
+      "domain": "text/encoding",
+      "bugClass": "encoding — UTF-16 slice splits astral code points (surrogate pair)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "06-dedupe",
+      "domain": "data-structure / algorithm",
+      "bugClass": "performance / complexity regression (O(n^2) vs O(n)) — functionally correct",
+      "expectDetection": false,
+      "detected": false,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "07-variance",
+      "domain": "numerics / statistics",
+      "bugClass": "floating-point catastrophic cancellation (naive one-pass variance)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "08-access-control",
+      "domain": "security / multi-user service",
+      "bugClass": "broken access control — IDOR / horizontal privilege escalation (OWASP A01)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "09-add-months",
+      "domain": "date/time",
+      "bugClass": "calendar end-of-month overflow (off-by-days; missing clamp)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "10-csv-parse",
+      "domain": "parser / data ingestion",
+      "bugClass": "parser: naive split ignores quoted delimiters → silent data corruption + missing error path",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "11-sec-auth-bypass",
+      "domain": "security / authentication",
+      "bugClass": "authentication bypass — expired/replayed session accepted (missing expiry check)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "12-sec-priv-escalation",
+      "domain": "security / authorization",
+      "bugClass": "vertical privilege escalation — fail-open default (unrecognized role granted all actions)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "13-sec-injection",
+      "domain": "security / data access",
+      "bugClass": "SQL injection — untrusted value interpolated into query text instead of parameter-bound",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "14-sec-secret-leak",
+      "domain": "security / data exposure",
+      "bugClass": "sensitive data exposure — denylist serializer leaks secret fields (should be allowlist)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    }
+  ]
+}

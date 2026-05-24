@@ -1,0 +1,9 @@
+{
+  "id": "10-csv-parse",
+  "domain": "parser / data ingestion",
+  "bugClass": "parser: naive split ignores quoted delimiters → silent data corruption + missing error path",
+  "oneLineBug": "parseCsvLine returns line.split(',') — quoted commas wrongly split, quotes are left in values, \"\" is not decoded, and an unterminated quote never throws",
+  "groundTruthProbe": "parseCsvLine('\"a,b\",c') must be ['a,b','c'] (2 fields); buggy returns ['\"a','b\"','c'] (3 fields). parseCsvLine('\"x') must throw; buggy returns ['\"x'].",
+  "expectDetection": true,
+  "notesForScoringOnly": "Tests the fuzz/adversarial + error-path lenses. A happy-path test on unquoted input ('a,b,c') PASSES on the buggy impl, so only quoted-comma and unterminated-quote stimulus catches it. Strong candidate for the conservation/round-trip invariant ('quoted commas are data') and a malformed-input fuzz check."
+}

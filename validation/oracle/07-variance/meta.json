@@ -1,0 +1,10 @@
+{
+  "id": "07-variance",
+  "domain": "numerics / statistics",
+  "bugClass": "floating-point catastrophic cancellation (naive one-pass variance)",
+  "oneLineBug": "computes sumSq/n - mean^2; for large-magnitude data the two ~1e18 terms cancel catastrophically, losing precision (can even return a small negative), violating translation-invariance",
+  "groundTruthProbe": "variance([1000000001,1000000002,1000000003]) must equal variance([1,2,3])=0.6666… (translation-invariance); the naive formula returns garbage (often 0 or a tiny ±value) for the shifted input",
+  "expectDetection": true,
+  "soundnessJourney": "First run (batch 2): the verifier caught the bug BUT via an UNSOUND metamorphic relation (translation by k=1e12) that also rejects a correct two-pass impl → a false positive the scorer surfaced. Lesson added to the charter (MR validity domain). Re-run (batch 3) with that rule: caught it SOUNDLY via a stable two-pass reference model + hand-derived goldens on large-but-exactly-representable integers, and PROVED its checks pass a correct impl. So the honest ground truth is: catchable, but ONLY with sound numerical technique — naive large-k translation-invariance is a false-positive trap.",
+  "notesForScoringOnly": "expectDetection flipped false→true after the re-run demonstrated sound catchability. Detection requires a numerically-stable reference model + large-EXACTLY-REPRESENTABLE-input goldens, NOT out-of-domain translation shifts."
+}

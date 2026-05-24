@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-05-24T19:05:37.794Z",
+  "results": [
+    {
+      "id": "01-pluralize-bases",
+      "domain": "string/natural-language",
+      "bugClass": "incorrect regex (over-broad capture group causes wrong singularization)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "02-currencyjs-distribute",
+      "domain": "money/decimal",
+      "bugClass": "comparison on wrong variable (sign decided from per-item value instead of total) -> conservation/sign violation",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "03-parse-ms-infinity",
+      "domain": "date/time/numeric",
+      "bugClass": "overflow to Infinity -> NaN (missing finite guard on a multiplication)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "04-ms-negative-decimal",
+      "domain": "parsing/date-time",
+      "bugClass": "incorrect regex (single-digit quantifier where multi-digit was needed)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "05-semver-regex-truncate",
+      "domain": "parsing/semver",
+      "bugClass": "incorrect regex (lazy quantifiers cause the match to truncate before the prerelease/build suffix)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "06-strip-json-comments-escape",
+      "domain": "parsing/string",
+      "bugClass": "off-by-one / incomplete escape-run counting (only 1-2 backslashes handled, not parity of the full run)",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "07-compare-versions-shortcrash",
+      "domain": "parsing/semver/comparison",
+      "bugClass": "missing case / unguarded undefined -> crash (NaN coercion) on short versions",
+      "expectDetection": true,
+      "detected": true,
+      "surprise": false,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    },
+    {
+      "id": "08-word-wrap-redos",
+      "domain": "string/text",
+      "bugClass": "performance (ReDoS / catastrophic backtracking); secondary spec-ambiguous per-line trim behavior change",
+      "expectDetection": false,
+      "detected": true,
+      "surprise": true,
+      "falsePositive": false,
+      "contaminated": false,
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Minimal failing inputs found by the IV&V bench for truncate(s, n). Each is a regression seed: the SUT slices by UTF-16 code units, violating the code-point + validity contract. Inputs use codePoints (array of single-code-point strings) to avoid editor NFC/encoding ambiguity.",
+  "seeds": [
+    { "codePoints": ["U+1F600", "U+1F600", "U+1F600"], "n": 2, "expected": "first 2 code points = two emoji", "actualKind": "returned only ONE emoji (2 UTF-16 units)" },
+    { "codePoints": ["a", "U+1F600", "b"], "n": 2, "expected": "a + emoji", "actualKind": "a + LONE high surrogate U+D83D (ill-formed)" },
+    { "codePoints": ["U+1F600", "b"], "n": 1, "expected": "the whole emoji", "actualKind": "LONE high surrogate U+D83D (ill-formed)" },
+    { "codePoints": ["a", "U+1F600"], "n": 1, "expected": "a", "actualKind": "happens to be correct 'a' here, but n=1 on a leading emoji yields lone surrogate" },
+    { "codePoints": ["U+10000", "U+10000"], "n": 3, "expected": "both astral code points (no-op, len<=n)", "actualKind": "INV-NoOp / INV-Validity violated; lone surrogate emitted" }
+  ]
+}

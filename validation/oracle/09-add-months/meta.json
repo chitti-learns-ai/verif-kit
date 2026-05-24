@@ -1,0 +1,9 @@
+{
+  "id": "09-add-months",
+  "domain": "date/time",
+  "bugClass": "calendar end-of-month overflow (off-by-days; missing clamp)",
+  "oneLineBug": "uses Date.setUTCMonth which overflows when the target month lacks the start day (Jan 31 +1mo → Mar 3) instead of clamping to the last valid day (Feb 28/29)",
+  "groundTruthProbe": "addMonths('2021-01-31',1) must be '2021-02-28' (buggy returns '2021-03-03'); addMonths('2020-01-31',1) must be '2020-02-29'",
+  "expectDetection": true,
+  "notesForScoringOnly": "Deterministic + TZ-independent (UTC only). Catchable via the spec's worked examples and the no-overflow invariant. Tests whether the verifier exercises end-of-month boundaries, not just mid-month dates."
+}

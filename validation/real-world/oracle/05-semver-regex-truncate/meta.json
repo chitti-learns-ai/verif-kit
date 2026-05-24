@@ -1,0 +1,12 @@
+{
+  "domain": "parsing/semver",
+  "bugClass": "incorrect regex (lazy quantifiers cause the match to truncate before the prerelease/build suffix)",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "sindresorhus/semver-regex",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/sindresorhus/semver-regex/commit/e93d9c81ca2b27a7c63ae8f45725dfceb0df2d4a",
+  "issueUrl": "https://github.com/sindresorhus/semver-regex/pull/23",
+  "bugSummary": "The prerelease/build segments used lazy quantifiers ({0,100}?), so extracting a full SemVer string captured only the MAJOR.MINOR.PATCH core and dropped the -prerelease+build suffix; e.g. '1.2.3-alpha.10.beta.0+build.unicorn.rainbow'.match(re)[0] returned '1.2.3'.",
+  "triggerInput": "'1.2.3-alpha.10.beta.0+build.unicorn.rainbow'.match(semverRegex())[0] must equal the full string; buggy returns '1.2.3'. Also '1.1.2-prerelease+meta', '2.0.0+build.1848', '1.2.3-4'. (.test() returns true in both; plain '1.0.0' extracts correctly in both.)"
+}

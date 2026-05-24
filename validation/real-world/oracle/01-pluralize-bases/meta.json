@@ -1,0 +1,12 @@
+{
+  "domain": "string/natural-language",
+  "bugClass": "incorrect regex (over-broad capture group causes wrong singularization)",
+  "expectDetection": true,
+  "realBug": true,
+  "repo": "plurals/pluralize",
+  "license": "MIT",
+  "fixCommitUrl": "https://github.com/plurals/pluralize/commit/c46c6af6998a11c92212feea004f67cb2e76124c",
+  "issueUrl": null,
+  "bugSummary": "The -sis/-ses singularization rule's capture group included the stem 'ba', so singular('bases') wrongly became 'basis' (and 'databases' -> 'databasis') instead of 'base'/'database'.",
+  "triggerInput": "singular('bases') must be 'base' (buggy returns 'basis'); singular('databases') must be 'database' (buggy returns 'databasis')"
+}

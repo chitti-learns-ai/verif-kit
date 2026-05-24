@@ -1,0 +1,9 @@
+{
+  "id": "03-cart-pricing",
+  "domain": "e-commerce",
+  "bugClass": "money rounding / conservation (per-unit vs per-line discount rounding)",
+  "oneLineBug": "discount is rounded per UNIT then multiplied by qty, instead of rounding the whole line once; drifts by up to (qty-1) cents when the per-unit discount has a fractional cent",
+  "groundTruthProbe": "cartTotal([{priceCents:333,qty:3,discountPct:10}],0).discountCents must be 100 (buggy gives 99); a reference-model scoreboard over random items with fractional-cent unit discounts diverges",
+  "expectDetection": true,
+  "notesForScoringOnly": "Do NOT show to VE. The adversarial 333x3x10% case is deliberately NOT in the spec; the VE must find it via an independent reference model + random/metamorphic stimulus. This is the hardest of the first batch."
+}
