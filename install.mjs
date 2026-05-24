@@ -60,5 +60,10 @@ writeFileSync(
 );
 
 console.log('✓ Verif-Kit installed.');
+console.log('');
+console.log('  ⚠  RESTART Claude Code in this project before using it — fully QUIT and');
+console.log('     REOPEN (a new chat is not enough). Custom agents only load at startup,');
+console.log('     so the verification-engineer agent registers only after a real restart.');
+console.log('');
 console.log('  Next: edit verif-kit.config.json, then run  /verif-kit <module>');
 console.log('  Spec-kit integration (optional): add the after_implement hook from install.md.');

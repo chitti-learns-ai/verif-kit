@@ -1,0 +1,5 @@
+# Force LF line endings on every checkout, on every OS.
+# Critical: agent/skill Markdown frontmatter is parsed by splitting on `\n---\n`;
+# CRLF (`---\r`) breaks that and the verification-engineer agent fails to register.
+# Shell scripts also break with CRLF on Linux/macOS. So: LF everywhere.
+* text=auto eol=lf

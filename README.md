@@ -137,18 +137,36 @@ directed cases and a property or two, not a 40-minute fuzz campaign.
 
 ## Install
 
-From the root of the project you want to verify (no clone, no global install):
+From the root of the project you want to verify — **one command, no clone, no
+local copy needed** (npx fetches and runs it straight from GitHub):
 
 ```bash
 npx github:chitti-learns-ai/verif-kit
-# …or from a local checkout:
-node /path/to/verif-kit/install.mjs
 ```
+
+Then **fully restart Claude Code in that project** (quit and reopen — a new chat is
+not enough). Custom agents register only at startup, so the verification engine
+becomes available only after a real restart.
 
 The installer copies the command surface into `.claude/` (the verifier agent + the
 `/verif-kit` skill), the engine into `.verif-kit/` (templates, scripts, framework),
-and writes a starter `verif-kit.config.json`. It never overwrites an existing
-config, and writes a `.verif-kit/verif-kit.json` integrity manifest.
+and writes a starter `verif-kit.config.json` (never overwriting an existing one)
+plus a `.verif-kit/verif-kit.json` integrity manifest. It writes only relative
+paths — nothing about your machine is recorded.
+
+> Contributors hacking on Verif-Kit itself can instead run
+> `node /path/to/verif-kit/install.mjs` from a local checkout; everyday users
+> should not need a local copy.
+
+### Troubleshooting — `/verif-kit` runs but "verification-engineer agent not found"
+
+1. **Restart for real.** Fully quit Claude Code and reopen the project. Agents load
+   at startup only.
+2. **Confirm the file is there:** `.claude/agents/verification-engineer.md` should
+   exist in the project.
+3. **Line endings (Windows).** The agent file must have **LF** line endings — CRLF
+   breaks frontmatter parsing and the agent won't register. Installing via the npx
+   command above avoids this; this repo ships a `.gitattributes` that enforces LF.
 
 ## Usage
 
