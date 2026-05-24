@@ -8,7 +8,7 @@
 > underspecified — that is a finding waiting to happen; fix the contract (and
 > likely the spec) now.
 >
-> Produced by: the Designer. Consumed by: the `verification-engineer` (via `/verif-kit-verify`).
+> Produced by: the Designer. Consumed by: the `verification-engineer` (via `/verif-kit`).
 
 ## 1. Module under verification
 

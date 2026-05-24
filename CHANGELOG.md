@@ -14,7 +14,7 @@ blind, fresh-context agent verifies your code from the spec alone.
   metamorphic checks, drives functional-coverage closure, and signs off via
   mutation/fault-injection. Plan-gate-then-execute. Right-sizes effort to module
   complexity/risk.
-- **`/verif-kit-verify` orchestrator skill** (`skills/`) — runs the flow, resumes
+- **`/verif-kit` orchestrator skill** (`skills/`) — runs the flow, resumes
   from on-disk ticking checklists, shows live progress, emits a human-readable
   report (verdict + block diagram + "tested/found" tables + plain-English bottom line).
 - **Lenses:** functional/boundary/equivalence/property/metamorphic, conservation/

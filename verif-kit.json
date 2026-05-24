@@ -7,7 +7,7 @@
 
   "commandSurface": {
     "agent": "agents/verification-engineer.md",
-    "skill": "skills/verif-kit-verify/SKILL.md"
+    "skill": "skills/verif-kit/SKILL.md"
   },
   "templates": [
     "templates/verification-contract-template.md",
@@ -44,7 +44,7 @@
   },
   "integration": {
     "specKit": {
-      "afterImplementHook": "verif-kit.verify",
+      "afterImplementHook": "verif-kit",
       "phaseZTask": true,
       "note": "see install.md — zero changes to spec-kit core; uses its hook scanner"
     }

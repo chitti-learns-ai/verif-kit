@@ -34,11 +34,11 @@ answers *"is what we built actually correct — judged independently?"*
 
 ## How they integrate (two seams, different cadence)
 
-1. **`after_implement` hook** (per-increment nudge) — add `verif-kit.verify` under
+1. **`after_implement` hook** (per-increment nudge) — add `verif-kit` under
    `hooks.after_implement` in `.specify/extensions.yml`; Spec-Kit's existing hook
-   scanner surfaces `/verif-kit-verify` at the end of `/speckit-implement` with
+   scanner surfaces `/verif-kit` at the end of `/speckit-implement` with
    **zero changes to Spec-Kit core**.
-2. **`## Phase Z` task** (feature-completion gate) — a `/verif-kit-verify` task in
+2. **`## Phase Z` task** (feature-completion gate) — a `/verif-kit` task in
    `tasks.md`, ticked like any other, mandatory for P0/P1.
 
 The highest-value loop: **spec ambiguity discovered by verification flows back

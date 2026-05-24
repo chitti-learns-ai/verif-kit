@@ -32,7 +32,7 @@ verif-kit/
 - [x] Research existing tools, bug benchmarks, books, methodologies
 - [x] Bug-injection validation: **two studies, 22 cases** — synthetic (14, in `validation/`) + real-world (8 shipped-and-fixed bugs from MIT libraries, in `validation/real-world/`)
 - [x] Blind VE scored: **20/20 catchable detected · 1 honest miss held out · 0 false positives · 0 contamination** (`node validation/score.mjs` and `node validation/real-world/score.mjs` → ✅)
-- [x] Generalized, config-driven agent + verif-kit-verify SKILL (no host-project assumptions)
+- [x] Generalized, config-driven agent + verif-kit SKILL (no host-project assumptions)
 - [x] WebSearch/WebFetch on the VE (domain edge-case research; implementation off-limits)
 - [x] Cross-platform scripts + installer (smoke-tested) + manifest + README + methodology + better-than-speckit docs
 - [x] Security lens validated by **5 planted bugs** — IDOR (OWASP A01), auth bypass, vertical privilege escalation, SQL injection, secret leakage; runtime/E2E lens demonstrated by a real Playwright run

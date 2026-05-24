@@ -14,7 +14,7 @@ node <path-to>/verif-kit/install.mjs        # one cross-platform installer (need
 The installer:
 
 1. copies `verif-kit/agents/verification-engineer.md` → `.claude/agents/`
-2. copies `verif-kit/skills/verif-kit-verify/` → `.claude/skills/`
+2. copies `verif-kit/skills/verif-kit/` → `.claude/skills/`
 3. copies `verif-kit/templates/*` → `.verif-kit/templates/` (or `.specify/templates/` if spec-kit is present)
 4. copies `verif-kit/scripts/{powershell,bash}/*` → `.verif-kit/scripts/`
 5. copies `verif-kit/framework/<lang>/*` → `.verif-kit/framework/`
@@ -36,7 +36,7 @@ this instead of hard-coding anything — that is what makes them portable.
 ## Use
 
 ```
-/verif-kit-verify <module>     # after implementing non-trivial logic
+/verif-kit <module>     # after implementing non-trivial logic
 ```
 
 It runs plan-gate-then-execute, persists progress in on-disk ticking checklists
@@ -56,7 +56,7 @@ target repo's `.specify/extensions.yml`:
 hooks:
   after_implement:
     - extension: verif-kit
-      command: verif-kit.verify        # spec-kit maps dots→hyphens → /verif-kit-verify
+      command: verif-kit        # spec-kit maps dots→hyphens → /verif-kit
       enabled: true
       optional: true                 # nudge by default; set false to force for P0/P1
       prompt: Run independent verification on the modules just implemented?
@@ -66,7 +66,7 @@ hooks:
 
 Because every `speckit-*/SKILL.md` already scans `after_<phase>` hooks, this needs
 **zero changes to spec-kit core** — `/speckit-implement` will surface (or
-auto-run, if `optional: false`) `/verif-kit-verify` at the end of implementation.
+auto-run, if `optional: false`) `/verif-kit` at the end of implementation.
 
 **Seam 2 — `Phase Z` task (feature-completion gate).** Append to the project's
 `tasks-template.md` so `/speckit-tasks` emits a verification task into every
@@ -74,7 +74,7 @@ auto-run, if `optional: false`) `/verif-kit-verify` at the end of implementation
 
 ```markdown
 ## Phase Z: Verification gate
-- [ ] TZZZ Run `/verif-kit-verify` on each non-trivial logic module added/changed; resolve discrepancies; promote accepted independent tests. (Mandatory for P0/P1.)
+- [ ] TZZZ Run `/verif-kit` on each non-trivial logic module added/changed; resolve discrepancies; promote accepted independent tests. (Mandatory for P0/P1.)
 ```
 
 **Recommended:** ship both — Seam 1 is the reminder, Seam 2 is the requirement.

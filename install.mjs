@@ -60,5 +60,5 @@ writeFileSync(
 );
 
 console.log('✓ Verif-Kit installed.');
-console.log('  Next: edit verif-kit.config.json, then run  /verif-kit-verify <module>');
+console.log('  Next: edit verif-kit.config.json, then run  /verif-kit <module>');
 console.log('  Spec-kit integration (optional): add the after_implement hook from install.md.');

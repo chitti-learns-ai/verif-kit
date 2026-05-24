@@ -1,6 +1,6 @@
 ---
-name: verif-kit-verify
-description: Verif-Kit's independent verification flow. Orchestrates a TWO-CONTEXT verification of a code module — the Designer (this session, which has the source) hands an implementation-free contract to a fresh verification-engineer subagent that NEVER sees the source. Plan-gate-then-execute: a cheap PLAN pass surfaces spec ambiguities for the human to resolve FIRST, then a one-shot EXECUTE pass builds a coverage-driven, self-checking environment (constrained-random stimulus → independent reference model + scoreboard → assertions → functional-coverage closure → security + runtime lenses → mutation sign-off). State persists in on-disk ticking checklists so a compacted/interrupted run resumes by re-reading them. Project-agnostic: all repo specifics come from verif-kit.config.json. Triggers on "/verif-kit-verify", "verify this independently", "run IV&V". Different from running an existing test suite — this WRITES an independent verification environment in a fresh context.
+name: verif-kit
+description: Verif-Kit's independent verification flow. Orchestrates a TWO-CONTEXT verification of a code module — the Designer (this session, which has the source) hands an implementation-free contract to a fresh verification-engineer subagent that NEVER sees the source. Plan-gate-then-execute: a cheap PLAN pass surfaces spec ambiguities for the human to resolve FIRST, then a one-shot EXECUTE pass builds a coverage-driven, self-checking environment (constrained-random stimulus → independent reference model + scoreboard → assertions → functional-coverage closure → security + runtime lenses → mutation sign-off). State persists in on-disk ticking checklists so a compacted/interrupted run resumes by re-reading them. Project-agnostic: all repo specifics come from verif-kit.config.json. Triggers on "/verif-kit", "verify this independently", "run IV&V". Different from running an existing test suite — this WRITES an independent verification environment in a fresh context.
 ---
 
 # Verif-Kit — independent verification orchestrator
@@ -137,7 +137,7 @@ The user must always see what's happening, never opaque background churn:
   judgment; neither over- nor under-test.
 
 ## Cadence (proportionality)
-Full `/verif-kit-verify` runs once per module when its logic is substantially
+Full `/verif-kit` runs once per module when its logic is substantially
 complete — not per micro-edit. A small post-sign-off fix re-runs the promoted
 suite (`commands.fullVerify`); re-spawn the EXECUTE pass only if behavior/spec
 materially changed. Mutation + E2E run only at the EXECUTE/sign-off pass. Skip

@@ -105,10 +105,10 @@ project and you're ready.
 Use it:
 
 ```
-/verif-kit-verify <module>     # after you implement a non-trivial piece of logic
+/verif-kit <module>     # after you implement a non-trivial piece of logic
 ```
 
-(`/verif-kit-verify` is the generic command; in a repo that already wired the
+(`/verif-kit` is the generic command; in a repo that already wired the
 in-repo flow it may be exposed as `/ivv`.) It integrates with Spec-Kit two ways —
 a per-increment `after_implement` hook (nudge) and a feature-completion `Phase Z`
 task (gate) — with zero changes to Spec-Kit core. See `install.md` for the hook snippet.
@@ -137,7 +137,7 @@ Treat 📝 lenses as design intent, not proven capability, until cases land for 
 ```
 verif-kit/
   agents/verification-engineer.md     # the blind, project-agnostic verifier
-  skills/verif-kit-verify/SKILL.md      # plan-gate-then-execute orchestrator (+ resume)
+  skills/verif-kit/SKILL.md      # plan-gate-then-execute orchestrator (+ resume)
   templates/                          # contract + vplan + verification-tasks (ticking checklists)
   framework/typescript/               # scoreboard + coverage-model (language pack v1)
   scripts/{powershell,bash}/          # path-resolution + "where-are-we?" prerequisites oracle
