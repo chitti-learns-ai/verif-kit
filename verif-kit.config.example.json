@@ -27,6 +27,8 @@
     "fullVerify": "pnpm verify",
     "mutation": "pnpm exec stryker run",
     "e2e": "pnpm exec playwright test {spec}",
+    "e2eEngines": ["chromium", "webkit"],
+    "$comment_e2eEngines": "Browser engines to run the critical E2E path on. Include 'webkit' to approximate iOS Safari (catches Safari-only quirks). List only engines your project actually has installed; drop to ['chromium'] if that's all you run.",
     "pathPrefix": ""
   },
 

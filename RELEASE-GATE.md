@@ -40,6 +40,7 @@ written down honestly in the published docs:
 
 - The ReDoS detection is **timing-based** (environment-dependent), not a functional guarantee.
 - There is **no planted-bug end-to-end (browser) case** yet — the E2E lens is demonstrated, not bug-validated.
+- **Multi-engine / WebKit (iOS Safari) E2E** is wired via `commands.e2eEngines` but not yet validated by a planted Safari-only bug.
 - Only a **TypeScript/Vitest** framework pack ships; other languages are designed-for, not built.
 - Default independence is **prompt + audit + contamination check**, not a hard OS sandbox (separate-session mode is stronger).
 - Single model family; shared-spec blind spots are reduced, not eliminated.

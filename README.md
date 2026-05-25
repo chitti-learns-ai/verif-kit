@@ -225,6 +225,9 @@ auditor must re-run every check and mark it READY).
 - The ReDoS detection is **timing-based** (environment-dependent); runtime/E2E is
   demonstrated but has no planted-bug case yet; concurrency and integer-overflow
   lenses are future work.
+- **Multi-engine E2E (incl. WebKit / iOS Safari)** is wired via
+  `commands.e2eEngines`, but is **not yet validated by a planted Safari-only bug** —
+  treat it as a demonstrated check, not a proven capability.
 
 ## Layout
 

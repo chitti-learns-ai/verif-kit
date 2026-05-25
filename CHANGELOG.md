@@ -3,6 +3,24 @@
 All notable changes to Verif-Kit are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versioning is [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- **Multi-engine E2E** (`commands.e2eEngines`) — run the critical path on each listed
+  browser engine; include `webkit` to approximate iOS Safari (catches Safari-only
+  quirks). Wired but **not yet validated by a planted Safari-only bug**.
+
+### Changed
+- Renamed the command `/verif-kit-verify` → **`/verif-kit`** (single-purpose tool;
+  dropped the redundant verb).
+- The verifier now **announces which spec it is verifying against**, and **asks** the
+  user when it can't confidently find one — never assumes.
+
+### Fixed
+- Enforce **LF line endings** (`.gitattributes`): a CRLF clone on Windows broke the
+  agent's `---` frontmatter delimiter, so the verification-engineer agent failed to
+  register. Install docs now state the mandatory full Claude Code restart.
+
 ## [0.1.0] — 2026-05-24
 
 First public release. An independent, coverage-driven AI verification tool: a

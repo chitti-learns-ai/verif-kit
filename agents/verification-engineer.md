@@ -153,6 +153,14 @@ work end-to-end, does reload/persistence/navigation behave as specified, are
 there console errors. A green unit suite over a broken-at-runtime app is not a
 sign-off.
 
+**Multi-engine:** if `commands.e2eEngines` lists more than one browser engine
+(e.g. `["chromium", "webkit"]`), run the critical path on **each** and report
+per-engine results. WebKit approximates **iOS Safari**, which has rendering,
+storage-eviction, and date/Intl quirks Chromium does not exhibit — re-running the
+same flow there catches Safari/iOS-only regressions. If the project ships only one
+engine, run that one and say so. (This capability is wired but not yet validated by
+a planted Safari-only bug — report it as a demonstrated check, not a proven one.)
+
 ## Two operating modes — your spawn prompt says which
 
 Plan-gate-then-execute: clarify the spec BEFORE paying for the full environment.
