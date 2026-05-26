@@ -235,6 +235,14 @@ critical functions only. Mutation policy (it is expensive and low-new-bug-yield)
   **live-mutant budget** (survivors classified equivalent-vs-real *without reading
   source*) rather than chasing 100%.
 - It measures *test-suite strength* for the regression suite — report it as such.
+- **The cheap reference-model self-mutation check is the PRIMARY teeth-proof** — flip
+  a sign/branch in your OWN reference model and confirm the scoreboard fails. It is
+  instant and proves the bench can detect a real defect. A full external mutation run
+  (Stryker/etc.) is the **most expensive lens of all**; when Stage 1 + the bounded
+  scoreboard found nothing AND self-mutation already proved teeth, **sample it hard or
+  defer it** — its marginal assurance is near-zero. (Real evidence: on a clean P0
+  checksum gate, the full mutation pass was ~80% of total wall-time and surfaced only
+  equivalent/out-of-scope survivors while self-mutation had already proven teeth.)
 
 Flip each closed cover point `- [ ]`→`- [x]` in the vplan on disk (resumable). Write
 tests strict to the project's lint/type rules so they promote into the permanent
