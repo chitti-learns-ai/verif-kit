@@ -5,6 +5,28 @@ All notable changes to Verif-Kit are documented here. Format loosely follows
 
 ## [Unreleased]
 
+### Changed — RIGHT-SIZED STAGED GATE (the headline: stop the 10× over-testing)
+- **Verification depth is now earned by risk + evidence, not spent by default.**
+  Replaced "PLAN then always build the full environment" with a structural staged
+  gate: **Triage → Stage 1 (cheap independent plan + targeted boundary/metamorphic/
+  adversarial probes — the bug-finding stage, always run for non-chrome tiers) →
+  Stage-1 gate → Stage 2 (reference model + scoreboard + bounded random + sampled
+  mutation) ONLY when a real bug was found, the tier is Critical with an unpinnable
+  state space, or sign-off-grade depth is explicitly requested.** A Stage-1 sign-off
+  is a real sign-off.
+- **Hard time budget:** total verification time targets **≈ 1× the module's design
+  time**, never 10×. Mutation is now **Stage-2-only, incremental, sampled** (it
+  measures regression-suite strength, not product bugs) and never gates Core/Supporting
+  modules. New `staging` block + per-tier `defaultStage` in `verif-kit.config.json`.
+- **Why (evidence-based, not a guess):** on a real 11-module calibration (the
+  money_management_tool study, `validation/calibration-money-tracker.md`), every one
+  of the 4 real bugs was caught by cheap Stage-1 techniques; the heavy constrained-
+  random + mutation phase found **zero new bugs** while consuming ~10× the design
+  time. Grounded in risk-based testing (effort ∝ risk; test to *acceptable* risk) and
+  the documented impracticality of exhaustive mutation testing. Updated `docs/methodology.md`
+  (§9 Proportionality), the agent charter (§"Right-sized execution"), and the `/verif-kit`
+  skill (Phase 4 staged gate; tier-scaled sign-off bar).
+
 ### Added
 - **Multi-engine E2E** (`commands.e2eEngines`) — run the critical path on each listed
   browser engine; include `webkit` to approximate iOS Safari (catches Safari-only

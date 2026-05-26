@@ -115,6 +115,67 @@ one-shot EXECUTE pass — never paying the expensive build twice for a known gap
 State persists in on-disk ticking checklists (spec-kit's `- [ ]`→`- [x]`
 mechanic) so an interrupted/compacted run resumes from disk.
 
+## 9. Proportionality — the STAGED GATE (this governs how deep to go)
+
+> The earlier sections describe the *full* environment. This section governs **how
+> much of it to build** — because building all of it on every module is the failure
+> mode this tool was reborn to fix.
+
+**The evidence.** On the money_management_tool calibration (11 modules verified, ~10 h,
+documented in that repo's `reports/overnight-build/verification-retrospective.md`),
+**every one of the 4 real bugs was found by a cheap, *directed* technique** —
+independent spec re-reading and a handful of metamorphic/boundary/adversarial tests
+that each take minutes. The expensive phase — thousands of constrained-random cases
+plus mutation testing — found **zero new bugs**; it only *confirmed* correctness on
+the 7 clean modules and *measured test-suite strength*. Verification consumed ~10×
+the design time for that yield. Running bug-discovery-priced machinery as a default,
+regardless of risk or evidence, is the antipattern.
+
+**The principles** (grounded, not invented):
+- **Risk-based testing** — effort is proportional to risk, and you test to an
+  *acceptable* risk level, not to zero. (ISTQB / ISO 29119; effort ∝ risk is the
+  first rule of the discipline.)
+- **Mutation testing is the most expensive, lowest-new-bug-yield lens** — systematic
+  reviews call it impractical at scale (mutant volume); industrial CI studies adopt a
+  small *live-mutant budget* instead of exhaustive runs. So it is **gated**, not
+  default, and it measures regression-suite strength rather than finding product bugs.
+- **Defect-detection effectiveness comes from combining a FEW techniques**, not from
+  exhausting one — boundary-value analysis + equivalence partitioning + metamorphic
+  relations are the high-yield trio; volume of random cases has sharply diminishing
+  returns once functional coverage closes.
+
+**The flow** (full operational detail in `agents/verification-engineer.md`
+§"Right-sized execution — the staged gate"):
+
+```
+Triage (seconds)            classify risk tier; set time budget ≈ 1× design time
+  │  Chrome → decline IV&V (smoke only)
+  ▼
+Stage 1 — PLAN + PROBE      independent spec read + ambiguity sweep, THEN a small
+(cheap, minutes; always     high-leverage targeted set: boundary + metamorphic/
+ for Core/Critical)         conservation + 2–3 golden vectors + HAZARD-CLASS
+  │   ← MOST BUGS DIE HERE   adversarial probes (injectivity / ambiguity / sign /
+  │                          permutation / malformed). Run them. Escalate ambiguity.
+  ▼
+STAGE-1 GATE                escalate to Stage 2 ONLY if:
+  │                           (a) Stage 1 found a real bug (smoke ⇒ fire), OR
+  │                           (b) Critical tier with a state/combinatorial space the
+  │                               targeted set can't pin, OR
+  │                           (c) sign-off-grade depth explicitly requested.
+  │   else → STOP, sign off at Stage 1 (promote tests, state residual + that
+  │          Stage 2 was deliberately skipped — acceptable risk at lower cost).
+  ▼
+Stage 2 — DEEPEN            reference model + scoreboard + BOUNDED random (grow N
+(expensive, gated,          until coverage CLOSES, then stop) + security/runtime
+ time-boxed, Critical-       lenses + INCREMENTAL, SAMPLED mutation on critical
+ mostly)                     functions only. Time-boxed to the budget.
+```
+
+**Hard rule:** total verification wall-time targets **≤ ~1× the module's design
+time**. A Stage-1 sign-off is a real sign-off. Over-testing and under-testing are
+both judgment failures; this tool's redesign exists because over-testing was the one
+actually being committed.
+
 ## References
 
 NASA SWE-141 (IV&V); IEEE 1012; ISO/IEC/IEEE 29119. Knight & Leveson, "An

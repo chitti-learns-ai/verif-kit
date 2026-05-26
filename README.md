@@ -91,9 +91,24 @@ happens before the expensive work (proving correctness):
 3. **PLAN GATE** — ambiguities are resolved *before* execution. A genuine spec
    ambiguity escalates to the human (the spec is the shared single point of failure);
    a misread is dropped with a citation.
-4. **EXECUTE pass (once)** — the verifier builds the full environment above, drives
-   functional coverage to **closure**, runs the security and runtime lenses, and
-   **signs off via mutation**.
+4. **EXECUTE pass — a RIGHT-SIZED STAGED GATE** (depth earned by risk + evidence,
+   not spent by default; total verification time targets **≈ 1× the design time,
+   never 10×**):
+   - **Stage 1 (cheap, minutes; the bug-finding stage)** — a small high-leverage set
+     of boundary / metamorphic / conservation / **hazard-class adversarial** probes,
+     written and run. Most bugs die here.
+   - **Stage-1 gate** — escalate to Stage 2 **only** if Stage 1 found a real bug, the
+     tier is Critical with a state space the targeted set can't pin, or sign-off-grade
+     depth was explicitly asked for. Otherwise **sign off at Stage 1** (a real sign-off).
+   - **Stage 2 (gated, expensive, Critical-mostly)** — independent reference model +
+     scoreboard + **bounded** constrained-random to coverage closure + security/runtime
+     lenses + **incremental, sampled mutation**. Mutation measures regression-suite
+     strength, not product bugs, and never gates Core/Supporting modules.
+
+   *Evidence (`validation/calibration-money-tracker.md`): on a real 11-module run, all
+   4 bugs were Stage-1 finds; the heavy Stage-2 phase found zero new bugs while costing
+   ~10× the design time. A re-run re-caught all 4 with one Stage-1 probe each in ~1% of
+   the time. That study is why this gate exists.*
 5. **Designer ⇄ Verifier dialogue** — each finding is classified (confirmed bug /
    verifier misread / out-of-scope / spec-ambiguous) with spec citations. Explicitly
    anti-sycophantic: the author must not blindly fix; the verifier must not blindly

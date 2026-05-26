@@ -32,11 +32,33 @@
     "pathPrefix": ""
   },
 
+  "staging": {
+    "$comment": "The right-sized STAGED GATE — depth is earned by risk + evidence, not spent by default. Total verification time should target ~1x the module's design time (NOT 10x). See docs/methodology.md §9 and the agent charter §'Right-sized execution'.",
+    "timeBudgetMultipleOfDesign": 1.0,
+    "stage1": {
+      "$comment": "Cheap, minutes; ALWAYS run for non-chrome tiers; the bug-finding stage. Independent plan + ambiguity sweep, then a small high-leverage targeted set: boundary + equivalence partitions + metamorphic/conservation + 2-3 hand-computed goldens + hazard-class adversarial probes. No reference-model volume, no mutation.",
+      "alwaysRunForTiers": ["P0", "P1", "P2"]
+    },
+    "stage1Gate": {
+      "$comment": "Escalate to Stage 2 ONLY if at least one trigger holds; otherwise sign off at Stage 1 (a real sign-off).",
+      "escalateToStage2If": [
+        "stage1FoundARealBug",
+        "tierIsCriticalAndStateSpaceUnpinnable",
+        "signOffGradeDepthExplicitlyRequested"
+      ]
+    },
+    "stage2": {
+      "$comment": "Expensive, GATED, time-boxed, Critical-mostly. Reference model + scoreboard + BOUNDED random (grow N to coverage closure then stop) + security/runtime lenses + INCREMENTAL SAMPLED mutation on critical functions only.",
+      "boundedRandom": "grow until functional coverage closes, then stop — no fixed huge N",
+      "mutation": { "scope": "critical/changed functions only", "policy": "incremental + sampled; accept a small live-mutant budget (classify survivors equivalent-vs-real); it measures regression-suite strength, not product bugs", "gatesTiers": ["P0"] }
+    }
+  },
+
   "riskTiers": {
-    "$comment": "Per-tier gates the EXECUTE/sign-off pass enforces.",
-    "P0": { "label": "correctness-critical (money/safety)", "coverageLine": 95, "coverageBranch": 90, "mutationFloor": 80, "requireConservationInvariant": true, "separateSession": true },
-    "P1": { "label": "core logic / ingestion / parsers", "coverageLine": 80, "coverageBranch": 70, "mutationFloor": 70, "requireFuzz": true, "separateSession": false },
-    "P2": { "label": "app/UX logic", "coverageBranch": 60, "mutationFloor": 0, "requireE2E": true, "separateSession": false },
+    "$comment": "Per-tier gates. `defaultStage` is where a clean run signs off; Stage 2 still triggers on a found bug regardless. mutationFloor/coverage floors apply ONLY at a Stage-2 sign-off — a Stage-1 sign-off does not run mutation.",
+    "P0": { "label": "correctness-critical (money/safety/security/data-integrity)", "defaultStage": 2, "coverageLine": 95, "coverageBranch": 90, "mutationFloor": 80, "requireConservationInvariant": true, "separateSession": true },
+    "P1": { "label": "core logic / ingestion / parsers", "defaultStage": 1, "stage2OnBug": true, "coverageLine": 80, "coverageBranch": 70, "mutationFloor": 70, "requireFuzz": true, "separateSession": false },
+    "P2": { "label": "app/UX logic", "defaultStage": 1, "stage2OnBug": true, "coverageBranch": 60, "mutationFloor": 0, "requireE2E": true, "separateSession": false },
     "P3": { "label": "chrome/trivial", "skip": true }
   },
 

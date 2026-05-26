@@ -1,15 +1,20 @@
 ---
 name: verif-kit
-description: Verif-Kit's independent verification flow. Orchestrates a TWO-CONTEXT verification of a code module — the Designer (this session, which has the source) hands an implementation-free contract to a fresh verification-engineer subagent that NEVER sees the source. Plan-gate-then-execute: a cheap PLAN pass surfaces spec ambiguities for the human to resolve FIRST, then a one-shot EXECUTE pass builds a coverage-driven, self-checking environment (constrained-random stimulus → independent reference model + scoreboard → assertions → functional-coverage closure → security + runtime lenses → mutation sign-off). State persists in on-disk ticking checklists so a compacted/interrupted run resumes by re-reading them. Project-agnostic: all repo specifics come from verif-kit.config.json. Triggers on "/verif-kit", "verify this independently", "run IV&V". Different from running an existing test suite — this WRITES an independent verification environment in a fresh context.
+description: Verif-Kit's independent verification flow. Orchestrates a TWO-CONTEXT verification of a code module — the Designer (this session, which has the source) hands an implementation-free contract to a fresh verification-engineer subagent that NEVER sees the source. RIGHT-SIZED STAGED GATE: a cheap PLAN pass surfaces spec ambiguities for the human FIRST; then Stage 1 (independent plan + targeted boundary/metamorphic/adversarial probes — where most bugs die) runs and signs off unless a Stage-1 gate opens; Stage 2 (reference model + scoreboard + bounded random + sampled mutation) runs ONLY when a found bug or Critical risk earns it — keeping total verification time ≈ design time, never 10×. State persists in on-disk ticking checklists so a compacted/interrupted run resumes by re-reading them. Project-agnostic: all repo specifics come from verif-kit.config.json. Triggers on "/verif-kit", "verify this independently", "run IV&V". Different from running an existing test suite — this WRITES an independent verification environment in a fresh context.
 ---
 
 # Verif-Kit — independent verification orchestrator
 
 You orchestrate a two-context, coverage-driven verification. Read this whole file,
 then `verif-kit.config.json` at the repo root, then run the phases in order. The
-flow is **plan-gate-then-execute**: clarify the spec BEFORE paying for the full
-environment — finding ambiguities is cheap, proving correctness is expensive, so
-never pay the expensive part twice.
+flow is **plan-gate-then-execute**, run at a depth **proportional to risk**: clarify
+the spec BEFORE paying for any environment (finding ambiguities is cheap, proving
+correctness is expensive), then run the cheap **Stage 1** targeted probes — and stop
+there unless evidence (a found bug) or Critical risk earns the expensive **Stage 2**.
+The governing rule is **total verification time ≈ design time, never 10×**: on this
+tool's own calibration, every real bug was found in Stage 1; the heavy Stage-2
+machinery found none and only confirmed correctness. Depth is earned, not spent by
+default (see `docs/methodology.md` §9).
 
 ## ⛔ HARD REQUIREMENT — the real agent, or stop
 
@@ -87,17 +92,33 @@ Reading A/Designer, Reading B/VE, impact, recommended default) — use
 AskUserQuestion when clean. Apply each decision to the contract/spec (and code if
 behavior changes) BEFORE executing. If no ambiguities, proceed. Tick VT030–VT032.
 
-## Phase 4 — EXECUTE pass (expensive; once)
+## Phase 4 — EXECUTE pass: the STAGED GATE (right-size the depth)
 Spawn a FRESH **`verification-engineer`** (MODE: EXECUTE) with the clarified
 contract + vplan + quarantine path + `commands.runQuarantine` + the project's
-lint/type rules (for promotability). It builds the environment (generator →
-independent reference model → scoreboard → assertions → coverage model), drives
-functional-coverage to closure (flipping each closed cover point `- [ ]`→`- [x]`
-in the vplan on disk), applies the **security** lens (if `security.enabled` and
-the module touches authz/authn/multi-user — OWASP A01: IDOR, auth bypass,
-privilege escalation, injection, secret leakage) and the **runtime/E2E** lens (if
-a running app, via `commands.e2e`), and at sign-off runs `commands.mutation` +
-the reference-model self-mutation check. Capture its Sign-off Report; re-audit
+lint/type rules + the module's **risk tier** + a stated **time budget ≈ 1× the
+module's design effort**. The VE runs the staged gate (full detail in its charter
+§"Right-sized execution"):
+
+- **Stage 1 — targeted probes (cheap, always for Core/Critical; the bug-finding
+  stage):** a small high-leverage set — boundary + equivalence partitions +
+  metamorphic/conservation relations + 2–3 hand-computed goldens + **hazard-class
+  adversarial probes** (injectivity for keys, ambiguity for matchers, sign for
+  money, permutation for ordering, malformed for parsers) — written and RUN,
+  flipping closed cover points in the vplan. Most bugs surface here.
+- **Stage-1 gate:** escalate to Stage 2 ONLY if (a) Stage 1 found a real bug, (b)
+  Critical tier with a state/combinatorial space the targeted set can't pin, or (c)
+  sign-off-grade depth was explicitly requested. **Otherwise sign off at Stage 1** —
+  promote the targeted tests, state the residual + that Stage 2 was deliberately
+  skipped (acceptable risk at lower cost). A Stage-1 sign-off is a real sign-off.
+- **Stage 2 — deepen (gated, expensive, time-boxed, Critical-mostly):** independent
+  reference model + scoreboard + **bounded** constrained-random (grow N to coverage
+  closure, then stop) + the **security** lens (if `security.enabled` & the module
+  touches authz/authn/multi-user — OWASP A01: IDOR, auth bypass, privilege
+  escalation, injection, secret leakage) + the **runtime/E2E** lens (if a running
+  app, via `commands.e2e`) + **incremental, sampled** `commands.mutation` on the
+  critical functions only + the reference-model self-mutation check.
+
+Capture the Sign-off Report (which states the stage reached + why); re-audit
 independence. Tick VT040–VT045.
 
 ## Phase 5 — Triage discrepancies
@@ -158,5 +179,13 @@ verifier (no independence = the failure mode this flow exists to eliminate).
 3. Clarify spec ambiguity at the PLAN gate — before the expensive EXECUTE pass.
 4. Never resolve a genuine spec ambiguity without the human.
 5. Never weaken a check to force green; fix code or clarify spec.
-6. A sign-off requires closed functional coverage AND a mutation score proving the bench can fail.
-7. Always promote accepted tests; always persist progress in the on-disk checklists; always state the honest residual; never claim perfection.
+6. Sign-off bar is tier-scaled: a **Stage-1** sign-off requires the targeted probe
+   set run + relevant cover points closed + ambiguities resolved (NO mutation
+   required — it's deliberately skipped, and the report says so). A **Stage-2**
+   sign-off (Critical tier, or escalated by a found bug) additionally requires
+   closed functional coverage AND a mutation score proving the bench can fail.
+   Never run Stage 2 — and never demand a mutation score — when the Stage-1 gate
+   didn't open; that is the 10×-over-testing failure this tool was rebuilt to end.
+7. Keep total verification time ≈ design time; depth is earned by risk + evidence,
+   never spent by default.
+8. Always promote accepted tests; always persist progress in the on-disk checklists; always state the honest residual; never claim perfection.
